@@ -1,0 +1,16 @@
+ {
+    "OfferData":[
+         {
+            "id":1,
+             "image":"https://i.pinimg.com/1200x/f7/81/5c/f7815c762345401f46409797946416f7.jpg"
+         },
+         {
+            "id":2,
+            "image":"https://i.pinimg.com/736x/e4/3b/c7/e43bc7f546203118dd1a689c89e7bcf8.jpg"
+         },
+         {
+            "id":3,
+            "image":"https://i.pinimg.com/736x/9a/da/75/9ada75eecf643db6dde67cd626bfb574.jpg"
+         }
+    ]
+}
