@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import SplashScreen from '../Screens/Auth/SplashScreen/SplashScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../Screens/Auth/LoginScreen/LoginScreen';
+import HomeScreen from '../Screens/Home/HomeScreen';
 import OnboardingScreen from '../Screens/Auth/OnboardingScreen/OnboardingScreen'
 
 import React from 'react'
@@ -14,6 +15,7 @@ const StuckNavigation = () => {
          <Stack.Screen name='SplashScreen' component={SplashScreen}/>
          <Stack.Screen name = 'OnboardingScreen' component={OnboardingScreen}/>
          <Stack.Screen name="Login" component={LoginScreen}/>
+         <Stack.Screen name='Home' component={HomeScreen}/>
      </Stack.Navigator>
   </NavigationContainer>
   )

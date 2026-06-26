@@ -4,14 +4,15 @@ import { FontSize,Fonts } from '../Theme/FontsSize'
 import { Colours } from '../Theme/Colours/Color'
 
 type props ={
-  title:String
+  title:String,
+  onPress?:()=>void
 }
 
-const Button = ({title}:props) => {
+const Button = ({title,onPress}:props) => {
   return (
-    <View style={Style.btnContainer}>
+    <TouchableOpacity style={Style.btnContainer} onPress={onPress}>
       <Text style={Style.btntext}>{title}</Text>
-    </View>
+    </TouchableOpacity>
   )
 }
 

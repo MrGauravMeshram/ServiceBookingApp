@@ -1,3 +1,10 @@
-module.exports = {
-  assets: ['./src/assets/fonts/'],
+const config = {
+  project: {
+    ios: {},
+    android: {},
+  },
+  assets: ['./src/assets/fonts'],
 };
+
+module.exports = config;
+module.exports.default = config;

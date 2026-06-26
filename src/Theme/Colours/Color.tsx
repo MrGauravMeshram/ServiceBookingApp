@@ -5,6 +5,10 @@ export const Colours = {
      white:"#FFF",
      Orange:"#FFBF00",
      BoneWhite:"#F9F6EE",
-     btnColours:"#EB4C4C"
-     
+     btnColours:"#EB4C4C",
+     charcoal: "#111",
+     mediumGray: "#555",
+     gray: "#666",
+     lightLavender: "#E4D9FF",
+     purple: "#6D3EFF"
 }

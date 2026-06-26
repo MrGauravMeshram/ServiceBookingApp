@@ -8,7 +8,7 @@ import CheckBox from '../../../Component/CheckBox';
 import InputFeild from '../../../Component/InputFeild';
 import Button from '../../../Component/Button';
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}:any) => {
   const [checked,setChecked] = useState(true)
   return (
     <KeyboardAwareScrollView
@@ -59,7 +59,7 @@ const LoginScreen = () => {
       </View>
         
         <View style={styles.btn}>
-          <Button title="Login"/>
+          <Button title="Login" onPress={()=>navigation.navigate("Home")}/>
         </View>
     </KeyboardAwareScrollView>
   );
