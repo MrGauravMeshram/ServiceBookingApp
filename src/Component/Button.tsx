@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
 import { FontSize, Fonts } from '../Theme/FontsSize'
 import { Colours } from '../Theme/Colours/Color'
+import { scale, verticalScale } from '../Theme/Normalization'
 
 type props = {
   title: String,
@@ -21,9 +22,9 @@ export default Button;
 
 const Style = StyleSheet.create({
   btnContainer: {
-    height: 50,
+    height: verticalScale(50),
     alignItems: "center",
-    borderRadius: 10,
+    borderRadius: scale(10),
     justifyContent: "center",
     backgroundColor: Colours.btnColours
   },

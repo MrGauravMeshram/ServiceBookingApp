@@ -6,6 +6,7 @@ import {
     Text,
     StyleSheet,
 } from 'react-native';
+import { scale, verticalScale } from '../../../Theme/Normalization';
 
 const ServiceBanner = ({
     image,
@@ -42,26 +43,26 @@ export default ServiceBanner;
 
 const styles = StyleSheet.create({
     container: {
-        height: 320,
-        marginHorizontal: 16,
+        height: verticalScale(320),
+        marginHorizontal: scale(16),
     },
 
     image: {
-        borderRadius: 20,
+        borderRadius: scale(20),
     },
 
     content: {
         flex: 1,
-        padding: 20,
+        padding: scale(20),
         justifyContent: 'space-between',
     },
 
     badge: {
         alignSelf: 'flex-start',
         backgroundColor: 'rgba(255,255,255,0.25)',
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 20,
+        paddingHorizontal: scale(12),
+        paddingVertical: verticalScale(6),
+        borderRadius: scale(20),
     },
 
     badgeText: {
@@ -71,14 +72,14 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        marginTop: 16,
+        marginTop: verticalScale(16),
         color: '#fff',
         fontSize: 32,
         fontWeight: '700',
     },
 
     subtitle: {
-        marginTop: 8,
+        marginTop: verticalScale(8),
         width: '60%',
         color: '#fff',
         fontSize: 18,
@@ -88,9 +89,9 @@ const styles = StyleSheet.create({
     button: {
         alignSelf: 'flex-start',
         backgroundColor: '#fff',
-        paddingHorizontal: 22,
-        paddingVertical: 12,
-        borderRadius: 12,
+        paddingHorizontal: scale(22),
+        paddingVertical: verticalScale(12),
+        borderRadius: scale(12),
     },
 
     buttonText: {

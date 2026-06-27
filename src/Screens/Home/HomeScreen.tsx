@@ -22,6 +22,8 @@ import { Dimensions } from 'react-native';
 import RecentBookingCard from './Component/RecentBooking'
 import { RecentBookingServices } from '../../Data/RecentBookingData'
 import { CleaningEssentials } from '../../Data/CleaningEssentials'
+import { scale, verticalScale } from '../../Theme/Normalization'
+import ExitApp from '../../utility/ExitApp'
 
 
 const { width } = Dimensions.get('window');
@@ -35,8 +37,7 @@ const HomeScreen = () => {
   useEffect(() => {
     checkPermission();
   }, []);
-
-
+  ExitApp();
 
 
   const HeaderAnimationStyle = useAnimatedStyle(() => {
@@ -58,6 +59,40 @@ const HomeScreen = () => {
 
     }
   };
+  const renderMostBookedItem = ({ item }: any) => (
+    <ServiceCard
+      image={item.image}
+      title={item.title}
+      rating={item.rating}
+      reviews={item.reviews}
+      price={item.price}
+      onPress={() => console.log('Service pressed!')}
+    />
+  );
+
+  const renderRecentBookingItem = ({ item }: any) => (
+    <RecentBookingCard
+      image={item.image}
+      title={item.title}
+      provider={item.provider}
+      bookedOn={item.bookedOn}
+      status={item.status}
+      price={item.price}
+      rating={item.rating}
+    />
+  );
+
+  const renderCleaningEssentialItem = ({ item }: any) => (
+    <ServiceCard
+      image={item.image}
+      title={item.title}
+      rating={item.rating}
+      reviews={item.reviews}
+      price={item.price}
+      onPress={() => console.log('Service pressed!')}
+    />
+  );
+
   return (
     <View style={style.Container}>
       <StatusBar barStyle='light-content' />
@@ -66,9 +101,9 @@ const HomeScreen = () => {
         stickyHeaderIndices={[2]}
         overScrollMode='never'
       >
-        <ImageBackground 
-          source={{ uri: "https://i.pinimg.com/1200x/55/fa/03/55fa030c535f28fb1a54f1d87483ddda.jpg" }} 
-          style={style.bgim} 
+        <ImageBackground
+          source={{ uri: "https://i.pinimg.com/1200x/55/fa/03/55fa030c535f28fb1a54f1d87483ddda.jpg" }}
+          style={style.bgim}
           resizeMode='cover'
         >
           <LinearGradient colors={['#000', 'transparent', 'transparent']} style={style.linearGradient} />
@@ -82,7 +117,7 @@ const HomeScreen = () => {
           <SearchBar />
         </Animated.View>
 
-        <View style={{ height: 280 }} />
+        <View style={{ height: verticalScale(280) }} />
 
         <View style={{ backgroundColor: Colours.BoneWhite }}>
           <Pill />
@@ -93,17 +128,13 @@ const HomeScreen = () => {
         <View>
           <FlatList
             data={MostBookedServices}
-            renderItem={({ item }) => (
-              <ServiceCard
-                image={item.image}
-                title={item.title}
-                rating={item.rating}
-                reviews={item.reviews}
-                price={item.price}
-                onPress={() => console.log('Service pressed!')}
-              />
-            )} keyExtractor={(item) => item.id.toString()} horizontal
-            contentContainerStyle={style.serviceCard} />
+            renderItem={renderMostBookedItem}
+            keyExtractor={(item) => item.id.toString()}
+            horizontal
+            nestedScrollEnabled={true}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={style.serviceCard}
+          />
         </View>
         <View
           style={style.Banner}>
@@ -112,7 +143,7 @@ const HomeScreen = () => {
             autoPlay
             autoPlayInterval={3000}
             width={width}
-            height={330}
+            height={verticalScale(330)}
             pagingEnabled
             snapEnabled
             data={BannerData}
@@ -128,41 +159,29 @@ const HomeScreen = () => {
             )}
           />
         </View>
-        <View>
+        <View style={{ paddingHorizontal: scale(16) }}>
           <Text style={style.lebel}>Recent Booking</Text>
           <FlatList
             data={RecentBookingServices}
             keyExtractor={(item) => item.id.toString()}
             horizontal
-            renderItem={({ item }) => (
-              <RecentBookingCard
-                image={item.image}
-                title={item.title}
-                provider={item.provider}
-                bookedOn={item.bookedOn}
-                status={item.status}
-                price={item.price}
-                rating={item.rating}
-              />
-            )}
-            showsVerticalScrollIndicator={false}
+            nestedScrollEnabled={true}
+            showsHorizontalScrollIndicator={false}
+            renderItem={renderRecentBookingItem}
+            contentContainerStyle={style.serviceCard}
           />
         </View>
         <View>
           <Text style={style.lebel}>Cleaning Essentials</Text>
           <FlatList
             data={CleaningEssentials}
-            renderItem={({ item }) => (
-              <ServiceCard
-                image={item.image}
-                title={item.title}
-                rating={item.rating}
-                reviews={item.reviews}
-                price={item.price}
-                onPress={() => console.log('Service pressed!')}
-              />
-            )} keyExtractor={(item) => item.id.toString()} horizontal
-            contentContainerStyle={[style.serviceCard, { paddingBottom: 20 }]} />
+            renderItem={renderCleaningEssentialItem}
+            keyExtractor={(item) => item.id.toString()}
+            horizontal
+            nestedScrollEnabled={true}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={[style.serviceCard, { paddingBottom: verticalScale(20) }]}
+          />
         </View>
       </Animated.ScrollView>
     </View>
@@ -181,30 +200,30 @@ const style = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    height: 450,
+    height: verticalScale(450),
   },
   linearGradient: {
     flex: 1,
-    borderRadius: 5
+    borderRadius: scale(5)
   },
   lebel: {
-    paddingLeft: 16,
-    marginTop: 16,
+    paddingLeft: scale(16),
+    marginTop: verticalScale(16),
     fontFamily: Fonts.MontserrateSemiBold,
     fontSize: FontSize.lg,
   },
-  searchHeader: { 
-    width: "100%", 
-    paddingHorizontal: 16, 
-    paddingVertical: 10,
+  searchHeader: {
+    width: "100%",
+    paddingHorizontal: scale(16),
+    paddingVertical: verticalScale(10),
     zIndex: 99,
   },
   serviceCard: {
-    gap: 10,
-    paddingHorizontal: 16,
-    marginTop: 16,
+    gap: scale(10),
+    paddingHorizontal: scale(16),
+    marginTop: verticalScale(16),
   },
   Banner: {
-    marginTop: 16,
+    marginTop: verticalScale(16),
   }
 })

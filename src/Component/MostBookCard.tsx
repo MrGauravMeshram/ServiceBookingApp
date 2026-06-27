@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, } from 'react-native';
 import { Colours } from '../Theme/Colours/Color';
+import { scale, verticalScale } from '../Theme/Normalization';
+import ScalePressable from './ScalePressable';
 
 type Props = {
     image: string;
@@ -22,8 +24,7 @@ const ServiceCard = ({
     onPress,
 }: Props) => {
     return (
-        <TouchableOpacity
-            activeOpacity={0.8}
+        <ScalePressable
             style={styles.card}
             onPress={onPress}>
             <Image source={{ uri: image }} style={styles.image} />
@@ -50,7 +51,7 @@ const ServiceCard = ({
 
                 </TouchableOpacity>
             </View>
-        </TouchableOpacity>
+        </ScalePressable>
     );
 };
 
@@ -58,36 +59,36 @@ export default ServiceCard;
 
 const styles = StyleSheet.create({
     card: {
-        width: 150,
+        width: scale(150),
         backgroundColor: Colours.white,
-        borderRadius: 12,
+        borderRadius: scale(12),
         overflow: 'hidden',
     },
 
     image: {
         width: '100%',
-        height: 130,
+        height: verticalScale(130),
     },
 
     title: {
         fontSize: 15,
         fontWeight: '600',
-        marginTop: 8,
-        marginHorizontal: 10,
+        marginTop: verticalScale(8),
+        marginHorizontal: scale(10),
         color: Colours.charcoal,
     },
 
     ratingRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 5,
-        marginHorizontal: 10,
+        marginTop: verticalScale(5),
+        marginHorizontal: scale(10),
     },
 
     star: {
         color: Colours.Black,
         fontSize: 12,
-        marginRight: 4,
+        marginRight: scale(4),
     },
 
     rating: {
@@ -96,14 +97,14 @@ const styles = StyleSheet.create({
     },
 
     bottomRow: {
-        marginTop: 12,
+        marginTop: verticalScale(12),
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-end',
-        gap: 15,
+        gap: scale(15),
 
-        marginHorizontal: 10,
-        marginBottom: 10,
+        marginHorizontal: scale(10),
+        marginBottom: verticalScale(10),
     },
 
     startText: {
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
     },
 
     price: {
-        marginTop: 2,
+        marginTop: verticalScale(2),
         fontSize: 16,
         fontWeight: '700',
         color: Colours.charcoal,
@@ -121,9 +122,9 @@ const styles = StyleSheet.create({
     addBtn: {
         borderWidth: 1,
         borderColor: Colours.lightLavender,
-        borderRadius: 10,
-        paddingHorizontal: 16,
-        paddingVertical: 6,
+        borderRadius: scale(10),
+        paddingHorizontal: scale(16),
+        paddingVertical: verticalScale(6),
         alignItems: 'center',
     },
 

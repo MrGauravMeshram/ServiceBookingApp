@@ -9,6 +9,7 @@ import { Colours } from '../../../Theme/Colours/Color';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../State/Store';
+import { scale, verticalScale } from '../../../Theme/Normalization';
 
 const HomeHeader = () => {
   const navigation = useNavigation<any>();
@@ -27,10 +28,10 @@ const HomeHeader = () => {
 
   return (
     <View style={Style.container}>
-      <View style={{ flex: 1, paddingRight: 80 }}>
+      <View style={{ flex: 1, paddingRight: scale(80) }}>
         <TouchableOpacity
           onPress={() => navigation.navigate("SearchLocation")}
-          style={{ flexDirection: "row", gap: 5, alignItems: "center", justifyContent: "flex-start" }}
+          style={{ flexDirection: "row", gap: scale(5), alignItems: "center", justifyContent: "flex-start" }}
           activeOpacity={0.7}
         >
           <Ionicons name="location" color="#FFF" size={20} />
@@ -44,7 +45,7 @@ const HomeHeader = () => {
           <FontAwesome name="money" color="#FFF" size={24} />
         </View>
         <View style={Style.Profile}>
-          <MaterialCommunityIcons name="account-circle-outline" color="#000" size={40} />
+          <MaterialCommunityIcons name="account-circle-outline" color="#000" size={scale(40)} />
         </View>
       </View>
     </View>
@@ -56,9 +57,9 @@ export default HomeHeader
 
 const Style = StyleSheet.create({
   container: {
-    paddingHorizontal: 16,
+    paddingHorizontal: scale(16),
     flexDirection: "row",
-    paddingTop: 42,
+    paddingTop: verticalScale(42),
     width: "100%",
     backgroundColor: "transparent"
   },
@@ -69,30 +70,30 @@ const Style = StyleSheet.create({
   },
   subtitle: {
     color: Colours.white,
-    maxWidth: 365,
+    maxWidth: scale(365),
   },
   money: {
-    height: 40,
-    width: 40,
+    height: scale(40),
+    width: scale(40),
     backgroundColor: "rgba(242, 242, 242, 0.5)",
-    borderRadius: 50,
+    borderRadius: scale(20),
     justifyContent: "center",
     alignItems: "center",
   },
   containerBox: {
     flexDirection: "row",
-    gap: 10,
+    gap: scale(10),
     position: "absolute",
-    right: 20,
-    top: 45,
+    right: scale(20),
+    top: verticalScale(45),
     alignSelf: "flex-end",
   },
   Profile: {
     backgroundColor: Colours.white,
-    borderRadius: 50,
+    borderRadius: scale(20),
     justifyContent: "center",
     alignItems: "center",
-    height: 40,
-    width: 40,
+    height: scale(40),
+    width: scale(40),
   }
 })

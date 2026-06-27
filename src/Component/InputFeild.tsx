@@ -1,6 +1,7 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { Colours } from '../Theme/Colours/Color';
+import { scale, verticalScale } from '../Theme/Normalization';
 
 type props = {
   placeHolder: string,
@@ -50,17 +51,17 @@ export default InputFeild
 
 const Style = StyleSheet.create({
   inputContainer: {
-    height: 50,
-    width: 320,
+    height: verticalScale(50),
+    width: '100%',
 
     borderWidth: 0.5,
     borderColor: "grey",
     elevation: 5,
     alignItems: "center",
-    paddingHorizontal: 16,
-    gap: 15,
+    paddingHorizontal: scale(16),
+    gap: scale(15),
     flexDirection: "row",
     backgroundColor: Colours.white,
-    borderRadius: 10,
+    borderRadius: scale(10),
   }
 })

@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, TextInput, Switch } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { Colours } from '../Theme/Colours/Color';
 import Feather from 'react-native-vector-icons/Feather';
+import { scale, verticalScale } from '../Theme/Normalization';
 
 type props = {
   title?: string;
@@ -42,11 +43,11 @@ export default SearchBar
 
 const Style = StyleSheet.create({
   SearchBar: {
-    height: 50,
+    height: verticalScale(50),
     width: "100%",
     flexDirection: "row",
     backgroundColor: Colours.white,
-    borderRadius: 10,
+    borderRadius: scale(10),
   },
   SearchIcon: {
     height: "100%",

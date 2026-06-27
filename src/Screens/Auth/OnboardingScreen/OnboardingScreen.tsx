@@ -1,22 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colours } from '../../../Theme/Colours/Color';
 import { OnboadingData } from '../../../Data/OnboadingScreenData';
-import { FontSize, Fonts } from '../../../Theme/FontsSize'
+import { FontSize, Fonts } from '../../../Theme/FontsSize';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { scale, verticalScale } from '../../../Theme/Normalization';
 
 const OnboardingScreen = ({ navigation }: any) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentData = OnboadingData[currentIndex];
 
-  const handleNext = () => {
+  const handleNext = async () => {
     setCurrentIndex(prev => (prev + 1 < OnboadingData.length ? prev + 1 : prev));
     if (currentIndex === OnboadingData.length - 1) {
-      navigation.navigate("Login")
+      try {
+        await AsyncStorage.setItem('useronboarded', 'true');
+      } catch (error) {
+        console.log("Error", error);
+      }
+      navigation.navigate("Login");
     }
   };
 
-  const handleSkip = () => {
-    navigation.navigate("Login")
+  const handleSkip = async () => {
+    try {
+      await AsyncStorage.setItem('useronboarded', 'true');
+    } catch (error) {
+      console.log("Error", error);
+    }
+    navigation.navigate("Login");
   };
 
   return (
@@ -25,6 +37,9 @@ const OnboardingScreen = ({ navigation }: any) => {
         <Image source={currentData.image} style={Style.image} />
         <Text testID="onboarding-title" style={Style.title}>
           {currentData.title}
+        </Text>
+        <Text testID="onboarding-subtitle" style={Style.subtitle}>
+          {currentData.subtitle}
         </Text>
       </View>
       <View style={{ gap: 10, flexDirection: "row", alignSelf: "center", marginRight: 20 }}>
@@ -67,7 +82,7 @@ const Style = StyleSheet.create({
     flex: 1,
     backgroundColor: Colours.LightWhite,
     justifyContent: 'center',
-    padding: 24,
+    padding: scale(24),
   },
   content: {
     flex: 1,
@@ -75,26 +90,27 @@ const Style = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    width: 220,
-    height: 220,
+    width: scale(220),
+    height: scale(220),
     resizeMode: 'contain',
-    marginBottom: 24,
+    marginBottom: verticalScale(24),
   },
   title: {
     fontSize: FontSize.vrlg,
     fontFamily: Fonts.MontserrateSemiBold,
     color: Colours.Black,
+    width: scale(250),
     textAlign: 'center',
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 24,
+    marginTop: verticalScale(24),
   },
   button: {
-    paddingVertical: 12,
-    paddingHorizontal: 18,
-    borderRadius: 8,
+    paddingVertical: verticalScale(12),
+    paddingHorizontal: scale(18),
+    borderRadius: scale(8),
     backgroundColor: Colours.Orange,
   },
   buttonText: {
@@ -102,13 +118,16 @@ const Style = StyleSheet.create({
     fontWeight: '600',
   },
   dot: {
-    height: 10,
-    width: 10,
-    gap: 25,
+    height: scale(10),
+    width: scale(10),
+    gap: scale(25),
     flexDirection: "row",
-    borderRadius: 50,
-
-
-
+    borderRadius: scale(50),
+  },
+  subtitle: {
+    fontSize: FontSize.lr,
+    fontFamily: Fonts.MontserrateSemiBold,
+    color: Colours.Black,
+    textAlign: 'center',
   }
 });

@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
 import React, { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import OtpInput from '../Components/OtpInput';
 import { FontSize, Fonts } from '../../../Theme/FontsSize';
 import { Colours } from '../../../Theme/Colours/Color';
@@ -11,6 +12,8 @@ import { useToast } from '../../../Component/Toast';
 import LottieView from 'lottie-react-native';
 import Carousel from 'react-native-reanimated-carousel';
 import { CarouselData } from '../../../Data/LottieData';
+import { scale, verticalScale } from '../../../Theme/Normalization';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const { width } = Dimensions.get('window');
 
 const LoginScreen = ({ navigation }: any) => {
@@ -21,78 +24,82 @@ const LoginScreen = ({ navigation }: any) => {
 
   const isValidNumber = phone.length === 10;
   return (
-    <KeyboardAwareScrollView
-      style={styles.container}
-      contentContainerStyle={styles.contentContainer}
-      enableOnAndroid={true}
-      extraScrollHeight={150}
-      keyboardShouldPersistTaps="handled"
-      showsVerticalScrollIndicator={false}
-    >
-      <View style={styles.ImageContainer}>
-        <Carousel
-          width={width}
-          height={550}
-          data={CarouselData}
-          autoPlay
-          loop
-          autoPlayInterval={3000}
-          pagingEnabled
-          renderItem={({ item }) => (
-            <LottieView
-              source={item.animation}
-              autoPlay
-              loop
-              resizeMode="cover"
-              style={styles.lottie}
-            />
-          )}
-        />
-      </View>
-
-      <View>
-        <Text style={styles.LoginText}>Login or SignUp</Text>
-      </View>
-      <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", paddingHorizontal: 16, marginLeft: 10 }}>
-        <View style={{ height: 50, width: 50, backgroundColor: "white", marginTop: 25, borderRadius: 10, justifyContent: "center", alignItems: "center", borderWidth: 0.8, borderColor: "grey", elevation: 5 }}>
-          <Image source={require('../../../assets/Images/indianFlag.png')} style={{ height: "70%", width: "70%" }} resizeMode='contain' />
-        </View>
-        <View style={styles.inputStyle}>
-
-          <InputFeild
-            placeHolder="Enter your mobile number"
-            length={10}
-            editable={!checked}
-
+    <SafeAreaView style={styles.container}>
+      <KeyboardAwareScrollView
+        style={styles.container}
+        contentContainerStyle={styles.contentContainer}
+        enableOnAndroid={true}
+        extraScrollHeight={verticalScale(150)}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.ImageContainer}>
+          <Carousel
+            width={width}
+            height={verticalScale(550)}
+            data={CarouselData}
+            autoPlay
+            loop
+            autoPlayInterval={3000}
+            pagingEnabled
+            renderItem={({ item }) => (
+              <LottieView
+                source={item.animation}
+                autoPlay
+                loop
+                resizeMode="cover"
+                style={styles.lottie}
+              />
+            )}
           />
         </View>
+
         <View>
-
+          <Text style={styles.LoginText}>Login or SignUp</Text>
         </View>
-      </View>
-      <View style={styles.checkbox}>
-        <CheckBox
-          checked={checked}
-          onPress={() => setChecked(!checked)} />
-        <Text>Get OTP</Text>
-      </View>
+        <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: scale(16), marginTop: verticalScale(25), gap: scale(10) }}>
+          <View style={{ height: scale(50), width: scale(50), backgroundColor: "white", borderRadius: scale(10), justifyContent: "center", alignItems: "center", borderWidth: 0.8, borderColor: "grey", elevation: 5 }}>
+            <Image source={require('../../../assets/Images/indianFlag.png')} style={{ height: "70%", width: "70%" }} resizeMode='contain' />
+          </View>
+          <View style={{ flex: 1 }}>
+            <InputFeild
+              placeHolder="Enter your mobile number"
+              length={10}
+              editable={!checked}
+            />
+          </View>
+        </View>
+        <View style={styles.checkbox}>
+          <CheckBox
+            checked={checked}
+            onPress={() => setChecked(!checked)} />
+          <Text>Get OTP</Text>
+        </View>
 
-      <View style={styles.Otp}>
-        <Text style={{ marginBottom: 10, marginLeft: 25 }}>Enter Your OTP</Text>
-        <OtpInput
-          enabled={checked}
-          onOtpComplete={setIsOtpComplete} />
-      </View>
+        <View style={styles.Otp}>
+          <Text style={{ marginBottom: verticalScale(10), marginLeft: scale(25) }}>Enter Your OTP</Text>
+          <OtpInput
+            enabled={checked}
+            onOtpComplete={setIsOtpComplete} />
+        </View>
 
+
+
+
+      </KeyboardAwareScrollView>
       <View style={styles.btn}>
         <Button title="Login" disabled={!isOtpComplete}
-          onPress={() => {
-
-            showToast("Login successful", "success");
-            navigation.navigate("Home");
+          onPress={async () => {
+            try {
+              await AsyncStorage.setItem('isLoggedIn', 'true');
+              showToast("Login successful", "success");
+              navigation.replace("Home");
+            } catch (err) {
+              console.log("Error saving login status:", err);
+            }
           }} />
       </View>
-    </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -107,23 +114,23 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   ImageContainer: {
-    height: 550,
+    height: verticalScale(550),
   },
   image: {
     width: '100%',
     height: '100%',
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
+    borderBottomLeftRadius: scale(30),
+    borderBottomRightRadius: scale(30),
   },
   LoginText: {
     fontSize: FontSize.lr,
     fontFamily: Fonts.MonserratExtraBold,
     textAlign: 'center',
-    marginTop: 20,
+    marginTop: verticalScale(20),
   },
   inputStyle: {
-    marginTop: 25,
-    paddingHorizontal: 20,
+    marginTop: verticalScale(25),
+    paddingHorizontal: scale(20),
   },
   Otp: {
     alignSelf: "center",
@@ -133,16 +140,18 @@ const styles = StyleSheet.create({
   },
   checkbox: {
     flexDirection: "row",
-    gap: 10,
-    paddingHorizontal: 20,
-    marginTop: 16,
+    gap: scale(10),
+    paddingHorizontal: scale(20),
+    marginTop: verticalScale(16),
     alignSelf: "flex-end"
 
   },
   btn: {
-    marginTop: 30,
-    paddingHorizontal: 16,
-
+    marginTop: verticalScale(30),
+    paddingHorizontal: scale(16),
+    height: scale(20),
+    marginBottom: verticalScale(30),
+    backgroundColor: Colours.BoneWhite,
   },
 
 
