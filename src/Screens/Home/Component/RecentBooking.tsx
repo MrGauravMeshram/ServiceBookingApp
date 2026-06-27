@@ -78,9 +78,8 @@ const styles = StyleSheet.create({
         backgroundColor: Colours.white,
         borderRadius: scale(14),
         padding: scale(12),
-        marginHorizontal: scale(5),
-        marginVertical: verticalScale(8),
-        elevation: 2,
+
+
     },
     image: {
         width: scale(90),

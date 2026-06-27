@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, StatusBar } from 'react-native'
+import { View, StyleSheet, StatusBar } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
@@ -6,7 +6,6 @@ import Button from '../../Component/Button'
 import { Colours } from '../../Theme/Colours/Color'
 import { Fonts, FontSize } from '../../Theme/FontsSize'
 import { scale, verticalScale } from '../../Theme/Normalization'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileScreen = () => {

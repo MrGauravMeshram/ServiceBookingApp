@@ -1,4 +1,3 @@
-import { View, Text } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import SplashScreen from '../Screens/Auth/SplashScreen/SplashScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';

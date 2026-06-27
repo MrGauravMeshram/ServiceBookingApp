@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
 import React, { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -18,11 +18,11 @@ const { width } = Dimensions.get('window');
 
 const LoginScreen = ({ navigation }: any) => {
   const [isOtpComplete, setIsOtpComplete] = useState(false);
-  const [checked, setChecked] = useState(true)
-  const [phone, setPhone] = useState("");
+  const [checked, setChecked] = useState(false)
+
   const { showToast } = useToast();
 
-  const isValidNumber = phone.length === 10;
+
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAwareScrollView
@@ -57,8 +57,8 @@ const LoginScreen = ({ navigation }: any) => {
         <View>
           <Text style={styles.LoginText}>Login or SignUp</Text>
         </View>
-        <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: scale(16), marginTop: verticalScale(25), gap: scale(10) }}>
-          <View style={{ height: scale(50), width: scale(50), backgroundColor: "white", borderRadius: scale(10), justifyContent: "center", alignItems: "center", borderWidth: 0.8, borderColor: "grey", elevation: 5 }}>
+        <View style={{ flexDirection: "row", alignItems: "flex-start", paddingHorizontal: scale(16), marginTop: verticalScale(25), gap: scale(10) }}>
+          <View style={{ height: verticalScale(50), width: scale(50), backgroundColor: "white", borderRadius: scale(10), justifyContent: "center", alignItems: "center", borderWidth: 0.8, borderColor: "grey", elevation: 5 }}>
             <Image source={require('../../../assets/Images/indianFlag.png')} style={{ height: "70%", width: "70%" }} resizeMode='contain' />
           </View>
           <View style={{ flex: 1 }}>
@@ -83,22 +83,22 @@ const LoginScreen = ({ navigation }: any) => {
             onOtpComplete={setIsOtpComplete} />
         </View>
 
-
+        <View style={styles.btn}>
+          <Button title="Login" disabled={!isOtpComplete}
+            onPress={async () => {
+              try {
+                await AsyncStorage.setItem('isLoggedIn', 'true');
+                showToast("Login successful", "success");
+                navigation.replace("Home");
+              } catch (err) {
+                console.log("Error:", err);
+              }
+            }} />
+        </View>
 
 
       </KeyboardAwareScrollView>
-      <View style={styles.btn}>
-        <Button title="Login" disabled={!isOtpComplete}
-          onPress={async () => {
-            try {
-              await AsyncStorage.setItem('isLoggedIn', 'true');
-              showToast("Login successful", "success");
-              navigation.replace("Home");
-            } catch (err) {
-              console.log("Error saving login status:", err);
-            }
-          }} />
-      </View>
+
     </SafeAreaView>
   );
 };

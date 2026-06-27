@@ -13,7 +13,6 @@ import { RootState } from '../../State/Store'
 import { loadSavedData, deleteAddress, setSelectedLocation } from '../../State/AddressSlice'
 import { getStorage, saveStorage } from '../../Storage/AddressStore'
 import { Address } from '../../utility/Address'
-import { useToast } from '../../Component/Toast'
 import { scale, verticalScale } from '../../Theme/Normalization'
 import ScalePressable from '../../Component/ScalePressable'
 
@@ -22,7 +21,6 @@ const SearchLocation = ({ navigation }: any) => {
     const addressState = useSelector((state: RootState) => state.address)
     const savedAddresses = addressState.savedAddresses
     const [currentLocation, setCurrentLocation] = useState<string>('')
-    const { showToast } = useToast();
 
     useEffect(() => {
         const loadInitialData = async () => {
@@ -74,10 +72,15 @@ const SearchLocation = ({ navigation }: any) => {
                     onPress: async () => {
                         try {
                             dispatch(deleteAddress(id));
+                            const isSelectedDeleted = addressState.selectedLocation?.id === id;
+                            if (isSelectedDeleted) {
+                                dispatch(setSelectedLocation(null));
+                            }
                             const updatedSavedAddresses = savedAddresses.filter(item => item.id !== id);
                             const updatedState = {
                                 ...addressState,
                                 savedAddresses: updatedSavedAddresses,
+                                selectedLocation: isSelectedDeleted ? null : addressState.selectedLocation,
                             };
                             await saveStorage(updatedState);
                         } catch (err) {
@@ -89,7 +92,7 @@ const SearchLocation = ({ navigation }: any) => {
         );
     };
 
-    const handleSelectCurrentLocation = () => {
+    const handleSelectCurrentLocation = async () => {
         if (!currentLocation) return;
         const currentAddr: Address = {
             id: 'current',
@@ -100,11 +103,29 @@ const SearchLocation = ({ navigation }: any) => {
             houseNumber: '',
         };
         dispatch(setSelectedLocation(currentAddr));
+        try {
+            const updatedState = {
+                ...addressState,
+                selectedLocation: currentAddr,
+            };
+            await saveStorage(updatedState);
+        } catch (err) {
+            console.log("Error saving current location:", err);
+        }
         navigation.goBack();
     };
 
-    const handleSelectSavedLocation = (item: Address) => {
+    const handleSelectSavedLocation = async (item: Address) => {
         dispatch(setSelectedLocation(item));
+        try {
+            const updatedState = {
+                ...addressState,
+                selectedLocation: item,
+            };
+            await saveStorage(updatedState);
+        } catch (err) {
+            console.log("Error saving selected location:", err);
+        }
         navigation.goBack();
     };
 

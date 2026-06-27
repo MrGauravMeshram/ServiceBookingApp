@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, TextInput, Switch } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import { View, StyleSheet, TextInput } from 'react-native'
+import React, { useState } from 'react'
 import { Colours } from '../Theme/Colours/Color';
 import Feather from 'react-native-vector-icons/Feather';
 import { scale, verticalScale } from '../Theme/Normalization';
@@ -8,9 +8,10 @@ type props = {
   title?: string;
   value?: string;
   onChangeText?: (text: string) => void;
+  editable?: boolean;
 }
 
-const SearchBar = ({ title = 'Search Food What You Want', value, onChangeText }: props) => {
+const SearchBar = ({ title = 'Search Food What You Want', value, onChangeText, editable = true }: props) => {
   const [input, setInput] = useState('');
 
   const textValue = value !== undefined ? value : input;
@@ -33,6 +34,7 @@ const SearchBar = ({ title = 'Search Food What You Want', value, onChangeText }:
         style={{ flex: 1, color: Colours.Black }}
         placeholder={title}
         placeholderTextColor='grey' 
+        editable={editable}
       />
     </View>
   )

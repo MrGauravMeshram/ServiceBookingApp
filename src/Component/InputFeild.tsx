@@ -2,15 +2,15 @@ import { View, Text, TextInput, StyleSheet } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { Colours } from '../Theme/Colours/Color';
 import { scale, verticalScale } from '../Theme/Normalization';
+import { FontSize, Fonts } from '../Theme/FontsSize';
 
 type props = {
   placeHolder: string,
-  secure?: boolean,
   length?: number,
   editable?: boolean;
 }
 
-const InputFeild = ({ placeHolder, secure, length, editable = true }: props) => {
+const InputFeild = ({ placeHolder, length, editable = true }: props) => {
   const [value, setValue] = useState("")
   const [showError, setShowError] = useState(false)
   useEffect(() => {
@@ -23,7 +23,7 @@ const InputFeild = ({ placeHolder, secure, length, editable = true }: props) => 
 
   return (
     <View>
-      <View style={[Style.inputContainer, { borderColor: showError ? "red" : "grey" }]}>
+      <View style={[Style.inputContainer, { borderColor: showError ? Colours.error : "grey" }]}>
         <View>
           <Text style={{ fontSize: 16, fontWeight: 600, }}>+91</Text>
         </View>
@@ -34,15 +34,15 @@ const InputFeild = ({ placeHolder, secure, length, editable = true }: props) => 
           editable={editable}
           onChangeText={(val) => setValue(val)}
           maxLength={length}
-          style={{ fontSize: 16 }}
+          style={{ fontSize: 16, width: "100%" }}
           keyboardType='number-pad'
         />
       </View>
-      <View>
-        {
-          showError && <Text style={{ color: "red" }}>Please Enter Valid Number</Text>
-        }
-      </View>
+      {showError && (
+        <View style={Style.errorContainer}>
+          <Text style={Style.errorText}>Please Enter Valid Number</Text>
+        </View>
+      )}
     </View>
   )
 }
@@ -63,5 +63,14 @@ const Style = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: Colours.white,
     borderRadius: scale(10),
+  },
+  errorContainer: {
+    marginTop: verticalScale(6),
+    paddingHorizontal: scale(4),
+  },
+  errorText: {
+    color: Colours.error,
+    fontSize: FontSize.small + 2, // 12
+    fontFamily: Fonts.MontserrateRegular,
   }
 })

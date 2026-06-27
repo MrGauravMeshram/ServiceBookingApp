@@ -17,14 +17,14 @@ const HomeHeader = () => {
 
   const headerTitle = selectedLocation
     ? (selectedLocation.landmark || selectedLocation.address.split(',')[0].trim() || selectedLocation.title)
-    : "Capital Park";
+    : "Select Location";
 
   const headerSubtitle = selectedLocation
     ? (selectedLocation.landmark
       ? `${selectedLocation.houseNumber ? `${selectedLocation.houseNumber}, ` : ''}${selectedLocation.address}`
       : (selectedLocation.address.split(',').slice(1).map(p => p.trim()).filter(Boolean).join(', ') || selectedLocation.address)
     )
-    : "Capital Pk, Road";
+    : "";
 
   return (
     <View style={Style.container}>

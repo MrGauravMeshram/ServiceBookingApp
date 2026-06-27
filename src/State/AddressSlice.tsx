@@ -29,7 +29,7 @@ const addressSlice = createSlice({
 
     reducers: {
 
-        setSelectedLocation: (state, action: PayloadAction<Address>) => {
+        setSelectedLocation: (state, action: PayloadAction<Address | null>) => {
 
             state.selectedLocation = action.payload;
 

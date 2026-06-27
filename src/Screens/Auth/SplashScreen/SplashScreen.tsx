@@ -1,4 +1,4 @@
-import { View, Text ,StyleSheet,Image} from 'react-native'
+import { View, StyleSheet, Image } from 'react-native'
 import {Colours} from '../../../Theme/Colours/Color'
 import React ,{useEffect}from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';

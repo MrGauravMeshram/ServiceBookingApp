@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import { TouchableOpacity, StyleSheet } from 'react-native'
+import React from 'react'
 import { Colours } from '../Theme/Colours/Color';
 import Entypo from 'react-native-vector-icons/Entypo';
 type Props = {

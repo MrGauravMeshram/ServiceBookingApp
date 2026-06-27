@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet, View, Text, TouchableOpacity, Platform, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Platform } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { Colours } from '../Theme/Colours/Color';
 import { Fonts, FontSize } from '../Theme/FontsSize';
 import { scale, verticalScale } from '../Theme/Normalization';
@@ -12,12 +12,6 @@ import BookingsScreen from '../Screens/Bookings/BookingsScreen';
 import ProfileScreen from '../Screens/Profile/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
-const { width: windowWidth } = Dimensions.get('window');
-
-const TAB_BAR_MARGIN = scale(16);
-const TAB_BAR_WIDTH = windowWidth - TAB_BAR_MARGIN * 2;
-const TAB_COUNT = 3;
-const TAB_WIDTH = TAB_BAR_WIDTH / TAB_COUNT;
 
 interface TabBarItemProps {
   label: string;
@@ -27,68 +21,63 @@ interface TabBarItemProps {
 }
 
 const TabBarItem = ({ label, isFocused, onPress, iconName }: TabBarItemProps) => {
-  const scaleVal = useSharedValue(1);
+  const translateY = useSharedValue(0);
 
   useEffect(() => {
-    scaleVal.value = withSpring(isFocused ? 1.08 : 1, {
-      damping: 12,
-      stiffness: 150,
+    translateY.value = withTiming(isFocused ? -verticalScale(16) : 0, {
+      duration: 200,
     });
   }, [isFocused]);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ scale: scaleVal.value }],
+      transform: [{ translateY: translateY.value }],
     };
   });
 
-  const color = isFocused ? Colours.btnColours : '#8E8E93';
+  const activeIconColor = Colours.white;
+  const inactiveIconColor = '#8E8E93';
 
   return (
     <TouchableOpacity
       onPress={onPress}
-      activeOpacity={0.8}
+      activeOpacity={0.9}
       style={styles.tabItem}
       accessibilityRole="button"
       accessibilityState={isFocused ? { selected: true } : {}}
     >
-      <Animated.View style={[styles.tabContent, animatedStyle]}>
-        <Ionicons name={iconName} size={isFocused ? 22 : 20} color={color} />
-        <Text style={[styles.tabLabel, { color }]}>
-          {label}
-        </Text>
+      <Animated.View style={[
+        styles.iconContainer,
+        isFocused ? styles.activeIconContainer : styles.inactiveIconContainer,
+        animatedStyle
+      ]}>
+        <Ionicons
+          name={iconName}
+          size={isFocused ? 24 : 20}
+          color={isFocused ? activeIconColor : inactiveIconColor}
+        />
       </Animated.View>
+      <Text style={[
+        styles.tabLabel,
+        { color: isFocused ? Colours.btnColours : '#8E8E93' }
+      ]}>
+        {label}
+      </Text>
     </TouchableOpacity>
   );
 };
 
 const CustomTabBar = ({ state, descriptors, navigation }: any) => {
-  const indicatorStyle = useAnimatedStyle(() => {
-    const targetTranslateX = state.index * TAB_WIDTH;
-    return {
-      transform: [
-        {
-          translateX: withSpring(targetTranslateX, {
-            damping: 18,
-            stiffness: 140,
-            mass: 0.8,
-          }),
-        },
-      ],
-    };
-  });
-
   return (
     <View style={styles.tabBarContainer}>
-      <Animated.View style={[styles.indicator, indicatorStyle]} />
       {state.routes.map((route: any, index: number) => {
         const { options } = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
             ? options.tabBarLabel
             : options.title !== undefined
-            ? options.title
-            : route.name;
+              ? options.title
+              : route.name;
 
         const isFocused = state.index === index;
 
@@ -135,20 +124,20 @@ const BottomNavigation = () => {
         headerShown: false,
       }}
     >
-      <Tab.Screen 
-        name="HomeTab" 
-        component={HomeScreen} 
-        options={{ title: 'Home' }} 
+      <Tab.Screen
+        name="HomeTab"
+        component={HomeScreen}
+        options={{ title: 'Home' }}
       />
-      <Tab.Screen 
-        name="BookingsTab" 
-        component={BookingsScreen} 
-        options={{ title: 'Bookings' }} 
+      <Tab.Screen
+        name="BookingsTab"
+        component={BookingsScreen}
+        options={{ title: 'Bookings' }}
       />
-      <Tab.Screen 
-        name="ProfileTab" 
-        component={ProfileScreen} 
-        options={{ title: 'Profile' }} 
+      <Tab.Screen
+        name="ProfileTab"
+        component={ProfileScreen}
+        options={{ title: 'Profile' }}
       />
     </Tab.Navigator>
   );
@@ -161,8 +150,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     position: 'absolute',
     bottom: Platform.OS === 'ios' ? verticalScale(24) : verticalScale(16),
-    left: TAB_BAR_MARGIN,
-    right: TAB_BAR_MARGIN,
+    left: scale(16),
+    right: scale(16),
     elevation: 8,
     backgroundColor: Colours.white,
     borderRadius: scale(24),
@@ -177,29 +166,44 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  indicator: {
-    position: 'absolute',
-    width: TAB_WIDTH - scale(16),
-    height: verticalScale(46),
-    borderRadius: scale(23),
-    backgroundColor: 'rgba(235, 76, 76, 0.08)',
-    left: scale(8),
-    top: '50%',
-    marginTop: -verticalScale(23),
+    overflow: 'visible',
   },
   tabItem: {
     flex: 1,
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'visible',
   },
-  tabContent: {
-    alignItems: 'center',
+  iconContainer: {
+    width: scale(48),
+    height: scale(48),
+    borderRadius: scale(24),
     justifyContent: 'center',
-    gap: verticalScale(2),
+    alignItems: 'center',
+    position: 'absolute',
+    top: verticalScale(4),
+  },
+  activeIconContainer: {
+    backgroundColor: Colours.btnColours,
+    borderWidth: 4,
+    borderColor: Colours.white,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 4,
+  },
+  inactiveIconContainer: {
+    backgroundColor: 'transparent',
+    borderWidth: 0,
   },
   tabLabel: {
+    position: 'absolute',
+    bottom: verticalScale(6),
     fontFamily: Fonts.MontserrateSemiBold || 'System',
     fontSize: FontSize.small - 1,
     fontWeight: '600',

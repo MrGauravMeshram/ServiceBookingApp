@@ -1,8 +1,8 @@
-import { View, Text ,TextInput,StyleSheet,Image,FlatList} from 'react-native'
+import { View, Text, StyleSheet, Image, FlatList } from 'react-native'
 import React from 'react'
 import { Colours } from '../../../Theme/Colours/Color'
-import {ServiceCategories}from '../../../Data/PillSectionData'
-import { scale, verticalScale } from '../../../Theme/Normalization'
+import { ServiceCategories } from '../../../Data/PillSectionData'
+import { scale } from '../../../Theme/Normalization'
 
 const Pill = () => {
 
@@ -25,7 +25,8 @@ return(
     keyExtractor={(item)=>item.id.toString()}
     horizontal
     nestedScrollEnabled
-    showsVerticalScrollIndicator={false}/>
+    showsHorizontalScrollIndicator={false}
+    contentContainerStyle={{ paddingHorizontal: scale(16) }}/>
   </View>
 )
 }

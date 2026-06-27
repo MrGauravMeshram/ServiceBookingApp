@@ -1,19 +1,17 @@
 import {
-  View, Text, StatusBar, ScrollView, StyleSheet, ImageBackground, Switch
+  View, Text, StatusBar, ImageBackground
 } from 'react-native'
-import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import React from 'react'
 import { Colours } from '../../Theme/Colours/Color'
 import HomeHeader from './Component/HomeHeader'
 import LinearGradient from 'react-native-linear-gradient';
 import SearchBar from '../../Component/SearchBar'
 import Pill from './Component/Pill'
-import { Fonts, FontSize } from '../../Theme/FontsSize'
 import requestLocationPermission from '../../utility/LocationPremission'
 import { useEffect } from 'react'
 import ServiceCard from '../../Component/MostBookCard'
 import { MostBookedServices } from '../../Data/MostBookService'
-import Animated, { useAnimatedRef, useScrollOffset, useAnimatedStyle, interpolate, Extrapolate, interpolateColor } from 'react-native-reanimated'
+import Animated, { useAnimatedRef, useScrollOffset, useAnimatedStyle, interpolateColor } from 'react-native-reanimated'
 import { FlatList } from 'react-native-gesture-handler'
 import Carousel from 'react-native-reanimated-carousel';
 import ServiceBanner from './Component/ServiceBanner';
@@ -22,8 +20,9 @@ import { Dimensions } from 'react-native';
 import RecentBookingCard from './Component/RecentBooking'
 import { RecentBookingServices } from '../../Data/RecentBookingData'
 import { CleaningEssentials } from '../../Data/CleaningEssentials'
-import { scale, verticalScale } from '../../Theme/Normalization'
+import { verticalScale } from '../../Theme/Normalization'
 import ExitApp from '../../utility/ExitApp'
+import { style } from '../../Style/HomeScreenStyle'
 
 
 const { width } = Dimensions.get('window');
@@ -43,13 +42,12 @@ const HomeScreen = () => {
   const HeaderAnimationStyle = useAnimatedStyle(() => {
     const backgroundColor = interpolateColor(
       scrollOffset.value,
-      [0, 100],
+      [330, 380],
       ['rgba(255,255,255,0)', 'rgba(255,255,255,1)']
     );
     return {
       backgroundColor,
-      elevation: scrollOffset.value > 100 ? 4 : 0,
-      shadowOpacity: scrollOffset.value > 100 ? 0.15 : 0,
+
     };
   })
   const checkPermission = async () => {
@@ -100,7 +98,9 @@ const HomeScreen = () => {
         scrollEventThrottle={16}
         stickyHeaderIndices={[2]}
         overScrollMode='never'
+        contentContainerStyle={{ paddingBottom: verticalScale(70) }}
       >
+
         <ImageBackground
           source={{ uri: "https://i.pinimg.com/1200x/55/fa/03/55fa030c535f28fb1a54f1d87483ddda.jpg" }}
           style={style.bgim}
@@ -114,10 +114,10 @@ const HomeScreen = () => {
         </View>
 
         <Animated.View style={[style.searchHeader, HeaderAnimationStyle]}>
-          <SearchBar />
+          <SearchBar editable={false} />
         </Animated.View>
 
-        <View style={{ height: verticalScale(280) }} />
+        <View style={{ height: verticalScale(260) }} />
 
         <View style={{ backgroundColor: Colours.BoneWhite }}>
           <Pill />
@@ -159,7 +159,7 @@ const HomeScreen = () => {
             )}
           />
         </View>
-        <View style={{ paddingHorizontal: scale(16) }}>
+        <View>
           <Text style={style.lebel}>Recent Booking</Text>
           <FlatList
             data={RecentBookingServices}
@@ -189,41 +189,3 @@ const HomeScreen = () => {
 }
 
 export default HomeScreen
-
-const style = StyleSheet.create({
-  Container: {
-    flex: 1,
-    backgroundColor: Colours.BoneWhite
-  },
-  bgim: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: verticalScale(450),
-  },
-  linearGradient: {
-    flex: 1,
-    borderRadius: scale(5)
-  },
-  lebel: {
-    paddingLeft: scale(16),
-    marginTop: verticalScale(16),
-    fontFamily: Fonts.MontserrateSemiBold,
-    fontSize: FontSize.lg,
-  },
-  searchHeader: {
-    width: "100%",
-    paddingHorizontal: scale(16),
-    paddingVertical: verticalScale(10),
-    zIndex: 99,
-  },
-  serviceCard: {
-    gap: scale(10),
-    paddingHorizontal: scale(16),
-    marginTop: verticalScale(16),
-  },
-  Banner: {
-    marginTop: verticalScale(16),
-  }
-})
