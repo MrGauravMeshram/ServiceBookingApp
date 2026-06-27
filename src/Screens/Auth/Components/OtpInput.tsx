@@ -1,8 +1,14 @@
-import React, {useRef, useState} from 'react';
-import {StyleSheet, TextInput, View} from 'react-native';
-import {Colours} from '../../../Theme/Colours/Color';
+import React, { useRef, useState } from 'react';
+import { StyleSheet, TextInput, View } from 'react-native';
+import { Colours } from '../../../Theme/Colours/Color';
 
-const OtpInputs = () => {
+
+type Props = {
+  enabled: boolean;
+  onOtpComplete: (isComplete: boolean) => void;
+};
+
+const OtpInputs = ({ enabled, onOtpComplete }: Props) => {
   const [otp, setOtp] = useState<string[]>(['', '', '', '']);
   const inputRefs = useRef<Array<TextInput | null>>([]);
 
@@ -12,7 +18,8 @@ const OtpInputs = () => {
     const newOtp = [...otp];
     newOtp[index] = value.slice(-1);
     setOtp(newOtp);
-
+    const isComplete = newOtp.every(item => item !== '');
+    onOtpComplete(isComplete);
     if (value && index < otp.length - 1) {
       inputRefs.current[index + 1]?.focus();
     }
@@ -39,6 +46,7 @@ const OtpInputs = () => {
             onChangeText={(value) => handleChange(value, index)}
             onKeyPress={(event) => handleKeyPress(event, index)}
             maxLength={1}
+            editable={enabled}
             keyboardType="number-pad"
             style={styles.inputbox}
             textAlign="center"
@@ -62,7 +70,7 @@ const styles = StyleSheet.create({
     width: 50,
     borderWidth: 0.8,
     borderRadius: 10,
-  
+
     borderColor: 'grey',
     backgroundColor: Colours.white,
     justifyContent: 'center',

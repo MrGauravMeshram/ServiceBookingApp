@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, Image ,TouchableOpacity} from 'react-native';
-import React ,{useState}from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
+import React, { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import OtpInput from '../Components/OtpInput';
 import { FontSize, Fonts } from '../../../Theme/FontsSize';
@@ -7,9 +7,19 @@ import { Colours } from '../../../Theme/Colours/Color';
 import CheckBox from '../../../Component/CheckBox';
 import InputFeild from '../../../Component/InputFeild';
 import Button from '../../../Component/Button';
+import { useToast } from '../../../Component/Toast';
+import LottieView from 'lottie-react-native';
+import Carousel from 'react-native-reanimated-carousel';
+import { CarouselData } from '../../../Data/LottieData';
+const { width } = Dimensions.get('window');
 
-const LoginScreen = ({navigation}:any) => {
-  const [checked,setChecked] = useState(true)
+const LoginScreen = ({ navigation }: any) => {
+  const [isOtpComplete, setIsOtpComplete] = useState(false);
+  const [checked, setChecked] = useState(true)
+  const [phone, setPhone] = useState("");
+  const { showToast } = useToast();
+
+  const isValidNumber = phone.length === 10;
   return (
     <KeyboardAwareScrollView
       style={styles.container}
@@ -20,47 +30,68 @@ const LoginScreen = ({navigation}:any) => {
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.ImageContainer}>
-        <Image
-          source={{
-            uri: 'https://i.pinimg.com/1200x/f7/81/5c/f7815c762345401f46409797946416f7.jpg',
-          }}
-          style={styles.image}
-          resizeMode="cover"
+        <Carousel
+          width={width}
+          height={550}
+          data={CarouselData}
+          autoPlay
+          loop
+          autoPlayInterval={3000}
+          pagingEnabled
+          renderItem={({ item }) => (
+            <LottieView
+              source={item.animation}
+              autoPlay
+              loop
+              resizeMode="cover"
+              style={styles.lottie}
+            />
+          )}
         />
       </View>
 
       <View>
         <Text style={styles.LoginText}>Login or SignUp</Text>
       </View>
-       <View style={{flexDirection:"row",justifyContent:"center",alignItems:"center",paddingHorizontal:16,marginLeft:10}}>
-        <View style={{height:50,width:50,backgroundColor:"white",marginTop:25,borderRadius:10,justifyContent:"center",alignItems:"center",borderWidth:0.8,borderColor:"grey",elevation:5}}>
-         <Image source={require('../../../assets/Images/indianFlag.png')} style={{height:"70%",width:"70%"}} resizeMode='contain'/>
+      <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", paddingHorizontal: 16, marginLeft: 10 }}>
+        <View style={{ height: 50, width: 50, backgroundColor: "white", marginTop: 25, borderRadius: 10, justifyContent: "center", alignItems: "center", borderWidth: 0.8, borderColor: "grey", elevation: 5 }}>
+          <Image source={require('../../../assets/Images/indianFlag.png')} style={{ height: "70%", width: "70%" }} resizeMode='contain' />
         </View>
-      <View style={styles.inputStyle}>
-     
-        <InputFeild
-          placeHolder="Enter your mobile number"
-          length={10}
-          
-        />
-      </View>
-      <View>
-      
-      </View>
+        <View style={styles.inputStyle}>
+
+          <InputFeild
+            placeHolder="Enter your mobile number"
+            length={10}
+            editable={!checked}
+
+          />
+        </View>
+        <View>
+
+        </View>
       </View>
       <View style={styles.checkbox}>
-         <CheckBox/>
-         <Text>Get OTP</Text>
+        <CheckBox
+          checked={checked}
+          onPress={() => setChecked(!checked)} />
+        <Text>Get OTP</Text>
       </View>
-      
+
       <View style={styles.Otp}>
-        <Text style={{marginBottom:10,marginLeft:25}}>Enter Your OTP</Text>
-        <OtpInput/>
+        <Text style={{ marginBottom: 10, marginLeft: 25 }}>Enter Your OTP</Text>
+        <OtpInput
+          enabled={checked}
+          onOtpComplete={setIsOtpComplete} />
       </View>
-        
-        <View style={styles.btn}>
-          <Button title="Login" onPress={()=>navigation.navigate("Home")}/>
-        </View>
+
+      <View style={styles.btn}>
+        <Button title="Login" disabled={!isOtpComplete}
+          onPress={() => {
+
+            showToast("Login successful", "success");
+            navigation.navigate("Home");
+          }} />
+      </View>
     </KeyboardAwareScrollView>
   );
 };
@@ -94,23 +125,29 @@ const styles = StyleSheet.create({
     marginTop: 25,
     paddingHorizontal: 20,
   },
-  Otp:{
-    alignSelf:"center",
-    alignItems:"center",
-    justifyContent:"center",
+  Otp: {
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
 
   },
-  checkbox:{
-    flexDirection:"row",
-    gap:10,
-    paddingHorizontal:20,
-    marginTop:16,
-    alignSelf:"flex-end"
+  checkbox: {
+    flexDirection: "row",
+    gap: 10,
+    paddingHorizontal: 20,
+    marginTop: 16,
+    alignSelf: "flex-end"
 
   },
-  btn:{
-    marginTop:30,
-    paddingHorizontal:16,
-  
-  }
+  btn: {
+    marginTop: 30,
+    paddingHorizontal: 16,
+
+  },
+
+
+  lottie: {
+    width: "100%",
+    height: "100%",
+  },
 });

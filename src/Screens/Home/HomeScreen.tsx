@@ -21,6 +21,7 @@ import { BannerData } from '../../Data/BannerData';
 import { Dimensions } from 'react-native';
 import RecentBookingCard from './Component/RecentBooking'
 import { RecentBookingServices } from '../../Data/RecentBookingData'
+import { CleaningEssentials } from '../../Data/CleaningEssentials'
 
 
 const { width } = Dimensions.get('window');
@@ -39,13 +40,16 @@ const HomeScreen = () => {
 
 
   const HeaderAnimationStyle = useAnimatedStyle(() => {
+    const backgroundColor = interpolateColor(
+      scrollOffset.value,
+      [0, 100],
+      ['rgba(255,255,255,0)', 'rgba(255,255,255,1)']
+    );
     return {
-      backgroundColor: interpolateColor(
-        scrollOffset.value,
-        [0, 150],
-        ['rgba(255,255,255,0)', 'rgba(255,255,255,1)']
-      )
-    }
+      backgroundColor,
+      elevation: scrollOffset.value > 100 ? 4 : 0,
+      shadowOpacity: scrollOffset.value > 100 ? 0.15 : 0,
+    };
   })
   const checkPermission = async () => {
     const hasPermission = await requestLocationPermission();
@@ -55,94 +59,113 @@ const HomeScreen = () => {
     }
   };
   return (
-
-    <Animated.ScrollView ref={scrollRef}
-      scrollEventThrottle={16}
-      stickyHeaderIndices={[2]}
-      overScrollMode='never'
-    >
+    <View style={style.Container}>
       <StatusBar barStyle='light-content' />
-      <Animated.View style={[{ height: 450 }]}>
-        <ImageBackground source={{ uri: "https://i.pinimg.com/1200x/55/fa/03/55fa030c535f28fb1a54f1d87483ddda.jpg" }} style={style.bgim} resizeMode='cover'>
-          <LinearGradient colors={['#000', 'transparent', 'transparent']} style={style.linearGradient}>
-            <HomeHeader />
-            <View style={{ paddingHorizontal: 16, marginTop: 16, flexDirection: "row", gap: 10, }}>
-
-
-            </View>
-          </LinearGradient>
+      <Animated.ScrollView ref={scrollRef}
+        scrollEventThrottle={16}
+        stickyHeaderIndices={[2]}
+        overScrollMode='never'
+      >
+        <ImageBackground 
+          source={{ uri: "https://i.pinimg.com/1200x/55/fa/03/55fa030c535f28fb1a54f1d87483ddda.jpg" }} 
+          style={style.bgim} 
+          resizeMode='cover'
+        >
+          <LinearGradient colors={['#000', 'transparent', 'transparent']} style={style.linearGradient} />
         </ImageBackground>
 
-      </Animated.View>
-      <Animated.View style={[style.searchHeader, HeaderAnimationStyle]}>
-        <SearchBar />
-      </Animated.View>
-      <View style={{ backgroundColor: Colours.BoneWhite }}>
-        <Pill />
-      </View>
-      <View style={style.lebel}>
-        <Text style={style.lebel}>Most Book Services</Text>
-      </View>
-      <View>
-        <FlatList
-          data={MostBookedServices}
-          renderItem={({ item }) => (
-            <ServiceCard
-              image={item.image}
-              title={item.title}
-              rating={item.rating}
-              reviews={item.reviews}
-              price={item.price}
-              onPress={() => console.log('Service pressed!')}
-            />
-          )} keyExtractor={(item) => item.id.toString()} horizontal
-          contentContainerStyle={style.serviceCard} />
-      </View>
-      <View
-        style={style.Banner}>
-        <Carousel
-          loop
-          autoPlay
-          autoPlayInterval={3000}
-          width={width}
-          height={330}
-          pagingEnabled
-          snapEnabled
-          data={BannerData}
-          scrollAnimationDuration={800}
-          renderItem={({ item }) => (
-            <ServiceBanner
-              image={item.image}
-              badge={item.badge}
-              title={item.title}
-              subtitle={item.subtitle}
-              buttonText={item.buttonText}
-            />
-          )}
-        />
-      </View>
-      <View>
-        <FlatList
-          data={RecentBookingServices}
-          keyExtractor={(item) => item.id.toString()}
-          horizontal
-          renderItem={({ item }) => (
-            <RecentBookingCard
-              image={item.image}
-              title={item.title}
-              provider={item.provider}
-              bookedOn={item.bookedOn}
-              status={item.status}
-              price={item.price}
-              rating={item.rating}
+        <View>
+          <HomeHeader />
+        </View>
 
-            />
-          )}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
-    </Animated.ScrollView>
+        <Animated.View style={[style.searchHeader, HeaderAnimationStyle]}>
+          <SearchBar />
+        </Animated.View>
 
+        <View style={{ height: 280 }} />
+
+        <View style={{ backgroundColor: Colours.BoneWhite }}>
+          <Pill />
+        </View>
+        <View >
+          <Text style={style.lebel}>Most Book Services</Text>
+        </View>
+        <View>
+          <FlatList
+            data={MostBookedServices}
+            renderItem={({ item }) => (
+              <ServiceCard
+                image={item.image}
+                title={item.title}
+                rating={item.rating}
+                reviews={item.reviews}
+                price={item.price}
+                onPress={() => console.log('Service pressed!')}
+              />
+            )} keyExtractor={(item) => item.id.toString()} horizontal
+            contentContainerStyle={style.serviceCard} />
+        </View>
+        <View
+          style={style.Banner}>
+          <Carousel
+            loop
+            autoPlay
+            autoPlayInterval={3000}
+            width={width}
+            height={330}
+            pagingEnabled
+            snapEnabled
+            data={BannerData}
+            scrollAnimationDuration={800}
+            renderItem={({ item }) => (
+              <ServiceBanner
+                image={item.image}
+                badge={item.badge}
+                title={item.title}
+                subtitle={item.subtitle}
+                buttonText={item.buttonText}
+              />
+            )}
+          />
+        </View>
+        <View>
+          <Text style={style.lebel}>Recent Booking</Text>
+          <FlatList
+            data={RecentBookingServices}
+            keyExtractor={(item) => item.id.toString()}
+            horizontal
+            renderItem={({ item }) => (
+              <RecentBookingCard
+                image={item.image}
+                title={item.title}
+                provider={item.provider}
+                bookedOn={item.bookedOn}
+                status={item.status}
+                price={item.price}
+                rating={item.rating}
+              />
+            )}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
+        <View>
+          <Text style={style.lebel}>Cleaning Essentials</Text>
+          <FlatList
+            data={CleaningEssentials}
+            renderItem={({ item }) => (
+              <ServiceCard
+                image={item.image}
+                title={item.title}
+                rating={item.rating}
+                reviews={item.reviews}
+                price={item.price}
+                onPress={() => console.log('Service pressed!')}
+              />
+            )} keyExtractor={(item) => item.id.toString()} horizontal
+            contentContainerStyle={[style.serviceCard, { paddingBottom: 20 }]} />
+        </View>
+      </Animated.ScrollView>
+    </View>
   )
 }
 
@@ -154,23 +177,28 @@ const style = StyleSheet.create({
     backgroundColor: Colours.BoneWhite
   },
   bgim: {
-    height: "100%", width: "100%",
-
-
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 450,
   },
   linearGradient: {
     flex: 1,
     borderRadius: 5
   },
   lebel: {
-    paddingLeft: 8,
+    paddingLeft: 16,
     marginTop: 16,
     fontFamily: Fonts.MontserrateSemiBold,
     fontSize: FontSize.lg,
-
-
   },
-  searchHeader: { position: "absolute", top: 100, right: 0, height: 70, paddingVertical: 16, width: "100%", paddingHorizontal: 16, },
+  searchHeader: { 
+    width: "100%", 
+    paddingHorizontal: 16, 
+    paddingVertical: 10,
+    zIndex: 99,
+  },
   serviceCard: {
     gap: 10,
     paddingHorizontal: 16,

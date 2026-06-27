@@ -1,44 +1,47 @@
-import { View, Text ,TextInput,StyleSheet} from 'react-native'
-import React,{useState,useEffect} from 'react'
+import { View, Text, TextInput, StyleSheet } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { Colours } from '../Theme/Colours/Color';
 
-type props= {
-placeHolder:String,
-secure?:boolean,
-length?:number,
+type props = {
+  placeHolder: string,
+  secure?: boolean,
+  length?: number,
+  editable?: boolean;
 }
 
-const InputFeild = ({placeHolder,secure,length}:props) => {
-const [value,setValue] = useState("")
-const [showError,setShowError] = useState(false)
-useEffect(() => {
-   if(value.length>0 &&value.length<10){
+const InputFeild = ({ placeHolder, secure, length, editable = true }: props) => {
+  const [value, setValue] = useState("")
+  const [showError, setShowError] = useState(false)
+  useEffect(() => {
+    if (value.length > 0 && value.length < 10) {
       setShowError(true);
-   }else{
-    setShowError(false)
-   }
-}, [value])
+    } else {
+      setShowError(false)
+    }
+  }, [value])
 
   return (
     <View>
-     <View  style={[Style.inputContainer,{borderColor:showError?"red":"grey"}]}>
+      <View style={[Style.inputContainer, { borderColor: showError ? "red" : "grey" }]}>
         <View>
-            <Text style={{fontSize:16,fontWeight:600,}}>+91</Text>
+          <Text style={{ fontSize: 16, fontWeight: 600, }}>+91</Text>
         </View>
         <TextInput
           placeholder={placeHolder}
           value={value}
           placeholderTextColor="grey"
-          onChangeText={(val)=>setValue(val)}
+          editable={editable}
+          onChangeText={(val) => setValue(val)}
           maxLength={length}
-         style={{fontSize:16}}
-         keyboardType='number-pad'
-          />
-     </View>
-     <View>
-       {
-            showError && <Text style={{color:"red"}}>Please Enter Valid Number</Text>
-          }
-     </View>
+          style={{ fontSize: 16 }}
+          keyboardType='number-pad'
+        />
+      </View>
+      <View>
+        {
+          showError && <Text style={{ color: "red" }}>Please Enter Valid Number</Text>
+        }
+      </View>
     </View>
   )
 }
@@ -46,18 +49,18 @@ useEffect(() => {
 export default InputFeild
 
 const Style = StyleSheet.create({
-    inputContainer:{
-        height:50,
-        width:320,
-    
-        borderWidth:0.5,
-        borderColor:"grey",
-        elevation:5,
-        alignItems:"center",
-      paddingHorizontal:16,
-      gap:15,
-        flexDirection:"row",
-        backgroundColor:"#FFF",
-        borderRadius:10,
-    }
+  inputContainer: {
+    height: 50,
+    width: 320,
+
+    borderWidth: 0.5,
+    borderColor: "grey",
+    elevation: 5,
+    alignItems: "center",
+    paddingHorizontal: 16,
+    gap: 15,
+    flexDirection: "row",
+    backgroundColor: Colours.white,
+    borderRadius: 10,
+  }
 })

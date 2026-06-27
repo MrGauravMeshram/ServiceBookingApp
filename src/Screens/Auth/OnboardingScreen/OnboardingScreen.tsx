@@ -1,22 +1,22 @@
-import React, {useState} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {Colours} from '../../../Theme/Colours/Color';
-import {OnboadingData} from '../../../Data/OnboadingScreenData';
-import {FontSize,Fonts} from '../../../Theme/FontsSize'
+import React, { useState } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Colours } from '../../../Theme/Colours/Color';
+import { OnboadingData } from '../../../Data/OnboadingScreenData';
+import { FontSize, Fonts } from '../../../Theme/FontsSize'
 
-const OnboardingScreen = ({navigation}:any) => {
+const OnboardingScreen = ({ navigation }: any) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentData = OnboadingData[currentIndex];
 
   const handleNext = () => {
     setCurrentIndex(prev => (prev + 1 < OnboadingData.length ? prev + 1 : prev));
-    if(currentIndex===OnboadingData.length-1){
+    if (currentIndex === OnboadingData.length - 1) {
       navigation.navigate("Login")
     }
   };
 
-  const handlePrevious = () => {
-    setCurrentIndex(prev => (prev > 0 ? prev - 1 : prev));
+  const handleSkip = () => {
+    navigation.navigate("Login")
   };
 
   return (
@@ -27,30 +27,30 @@ const OnboardingScreen = ({navigation}:any) => {
           {currentData.title}
         </Text>
       </View>
-      <View style={{gap:10,flexDirection:"row",alignSelf:"center",marginRight:20}}>
+      <View style={{ gap: 10, flexDirection: "row", alignSelf: "center", marginRight: 20 }}>
 
-{OnboadingData.map((_, index) => { 
-    const active = index === currentIndex;
-    return (
-      <View key={index} style={[Style.dot,{backgroundColor:active?"green":"grey"}]}>
-             
-        </View>
-    )
-})}
+        {OnboadingData.map((_, index) => {
+          const active = index === currentIndex;
+          return (
+            <View key={index} style={[Style.dot, { backgroundColor: active ? "green" : "grey" }]}>
+
+            </View>
+          )
+        })}
       </View>
 
       <View style={Style.footer}>
         <TouchableOpacity
           style={Style.button}
-          onPress={handlePrevious}
+          onPress={handleSkip}
           disabled={currentIndex === 0}>
-          <Text style={Style.buttonText}>Back</Text>
+          <Text style={Style.buttonText}>Skip</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={Style.button}
           onPress={handleNext}
-         >
+        >
           <Text style={Style.buttonText}>
             {currentIndex === OnboadingData.length - 1 ? 'GetStarted' : 'Next'}
           </Text>
@@ -82,7 +82,7 @@ const Style = StyleSheet.create({
   },
   title: {
     fontSize: FontSize.vrlg,
-    fontFamily:Fonts.MontserrateSemiBold,
+    fontFamily: Fonts.MontserrateSemiBold,
     color: Colours.Black,
     textAlign: 'center',
   },
@@ -101,14 +101,14 @@ const Style = StyleSheet.create({
     color: Colours.white,
     fontWeight: '600',
   },
-  dot:{
-    height:10,
-    width:10,
-    gap:25,
-    flexDirection:"row",
-    borderRadius:50,
-   
+  dot: {
+    height: 10,
+    width: 10,
+    gap: 25,
+    flexDirection: "row",
+    borderRadius: 50,
 
-    
+
+
   }
 });

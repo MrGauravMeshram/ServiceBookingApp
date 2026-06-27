@@ -10,5 +10,8 @@ export const Colours = {
      mediumGray: "#555",
      gray: "#666",
      lightLavender: "#E4D9FF",
-     purple: "#6D3EFF"
+     purple: "#6D3EFF",
+     success: "#2E7D32",
+     error: "#C62828",
+     info: "#1565C0"
 }
