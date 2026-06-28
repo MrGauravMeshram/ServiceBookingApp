@@ -1,4 +1,4 @@
-// api/geoapify.ts
+
 
 import axios from "axios";
 import { GEOAPIFY_API_KEY } from "../utility/contant";

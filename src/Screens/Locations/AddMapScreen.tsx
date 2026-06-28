@@ -18,7 +18,7 @@ import { saveAddress, loadSavedData } from '../../State/AddressSlice';
 import { saveStorage, getStorage } from '../../Storage/AddressStore';
 import LocationCard from './component/LocationCard';
 import { Address } from '../../utility/Address';
-import { useToast } from '../../Component/Toast';
+import Toast from 'react-native-toast-message';
 import { styles } from '../../Style/AddMapStyle';
 
 export function ExampleMap() {
@@ -28,14 +28,13 @@ export function ExampleMap() {
 const AddMapScreen = ({ navigation }: any) => {
     const dispatch = useDispatch();
     const addressState = useSelector((state: RootState) => state.address);
-    const { showToast } = useToast();
+
 
     const [location, setLocation] = useState<{ latitude: number, longitude: number } | null>(null);
     const [searchText, setSearchText] = useState('');
     const [searchResults, setSearchResults] = useState<any[]>([]);
     const [selectedAddress, setSelectedAddress] = useState('');
 
-    // Form inputs state
     const [houseNumber, setHouseNumber] = useState('');
     const [landmark, setLandmark] = useState('');
     const [selectedType, setSelectedType] = useState<'Home' | 'Work' | 'Other'>('Home');
@@ -156,7 +155,7 @@ const AddMapScreen = ({ navigation }: any) => {
         }
 
         if (!location) {
-            Alert.alert("Error", "Location coordinates are missing.");
+            Alert.alert("Error", "Something went wrong.");
             return;
         }
 
@@ -184,13 +183,17 @@ const AddMapScreen = ({ navigation }: any) => {
 
             await saveStorage(updatedState);
 
-            showToast("Address saved successfully!", "success");
+            Toast.show({
+                type: 'success',
+                text1: 'Address saved successfully!',
+                position: 'bottom',
+            });
             if (navigation && navigation.goBack) {
                 navigation.goBack();
             }
         } catch (err) {
             console.log("Error saving address:", err);
-            Alert.alert("Error", "Could not save the address. Please try again.");
+            Alert.alert("Error", "Something went wrong.");
         }
     };
 

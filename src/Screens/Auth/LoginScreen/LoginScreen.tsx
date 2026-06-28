@@ -2,13 +2,13 @@ import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
 import React, { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import OtpInput from '../Components/OtpInput';
+import OtpInput from './Components/OtpInput';
 import { FontSize, Fonts } from '../../../Theme/FontsSize';
 import { Colours } from '../../../Theme/Colours/Color';
 import CheckBox from '../../../Component/CheckBox';
 import InputFeild from '../../../Component/InputFeild';
 import Button from '../../../Component/Button';
-import { useToast } from '../../../Component/Toast';
+import Toast from 'react-native-toast-message';
 import LottieView from 'lottie-react-native';
 import Carousel from 'react-native-reanimated-carousel';
 import { CarouselData } from '../../../Data/LottieData';
@@ -20,7 +20,7 @@ const LoginScreen = ({ navigation }: any) => {
   const [isOtpComplete, setIsOtpComplete] = useState(false);
   const [checked, setChecked] = useState(false)
 
-  const { showToast } = useToast();
+
 
 
   return (
@@ -88,7 +88,11 @@ const LoginScreen = ({ navigation }: any) => {
             onPress={async () => {
               try {
                 await AsyncStorage.setItem('isLoggedIn', 'true');
-                showToast("Login successful", "success");
+                Toast.show({
+                  type: 'success',
+                  text1: 'Login successful',
+                  position: 'bottom',
+                });
                 navigation.replace("Home");
               } catch (err) {
                 console.log("Error:", err);

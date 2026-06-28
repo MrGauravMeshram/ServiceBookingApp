@@ -9,8 +9,8 @@ import Animated, {
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 interface ScalePressableProps extends PressableProps {
-  children: React.ReactNode;
-  style?: StyleProp<ViewStyle>;
+  children: any;
+  style?: any;
   scaleTo?: number;
 }
 

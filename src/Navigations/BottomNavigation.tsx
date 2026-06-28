@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   tabBarContainer: {
     flexDirection: 'row',
     position: 'absolute',
-    bottom: Platform.OS === 'ios' ? verticalScale(24) : verticalScale(16),
+    bottom: verticalScale(16),
     left: scale(16),
     right: scale(16),
     elevation: 8,

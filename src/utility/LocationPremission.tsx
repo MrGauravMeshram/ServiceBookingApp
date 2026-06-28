@@ -16,7 +16,6 @@ const requestLocationPermission = async () => {
             console.log('Location Permission Granted');
             return true;
         } else {
-            Alert.alert('Permission Denied', 'Location permission is required.');
             return false;
         }
     } catch (error) {

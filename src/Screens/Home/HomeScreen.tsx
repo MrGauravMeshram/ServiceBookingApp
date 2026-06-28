@@ -1,5 +1,5 @@
 import {
-  View, Text, StatusBar, ImageBackground
+  View, Text, StatusBar, ImageBackground, Alert, Linking
 } from 'react-native'
 import React from 'react'
 import { Colours } from '../../Theme/Colours/Color'
@@ -53,8 +53,15 @@ const HomeScreen = () => {
   const checkPermission = async () => {
     const hasPermission = await requestLocationPermission();
 
-    if (hasPermission) {
-
+    if (!hasPermission) {
+      Alert.alert(
+        'Location Permission Required',
+        'This app needs location permission to find and show nearby services. Please enable it in Settings.',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Open Settings', onPress: () => Linking.openSettings() },
+        ]
+      );
     }
   };
   const renderMostBookedItem = ({ item }: any) => (

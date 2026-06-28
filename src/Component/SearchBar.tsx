@@ -28,12 +28,12 @@ const SearchBar = ({ title = 'Search Food What You Want', value, onChangeText, e
       <View style={Style.SearchIcon}>
         <Feather name="search" color={Colours.btnColours} size={24} />
       </View>
-      <TextInput 
-        value={textValue} 
+      <TextInput
+        value={textValue}
         onChangeText={handleTextChange}
         style={{ flex: 1, color: Colours.Black }}
         placeholder={title}
-        placeholderTextColor='grey' 
+        placeholderTextColor='grey'
         editable={editable}
       />
     </View>
