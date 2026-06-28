@@ -47,7 +47,7 @@ const LoginScreen = ({ navigation }: any) => {
                 source={item.animation}
                 autoPlay
                 loop
-                resizeMode="cover"
+                resizeMode="contain"
                 style={styles.lottie}
               />
             )}
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   ImageContainer: {
-    height: verticalScale(550),
+    height: verticalScale(470),
   },
   image: {
     width: '100%',
