@@ -27,6 +27,7 @@ export const style = StyleSheet.create({
     },
     searchHeader: {
         width: "100%",
+      
         marginTop: verticalScale(20),
         paddingHorizontal: scale(16),
         paddingVertical: verticalScale(10),

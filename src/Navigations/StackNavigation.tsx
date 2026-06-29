@@ -8,7 +8,7 @@ import SearchLocation from '../Screens/Locations/SearchLocation';
 import AddMapScreen from '../Screens/Locations/AddMapScreen';
 import React from 'react'
 const Stack = createNativeStackNavigator();
-const StuckNavigation = () => {
+const StackNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='SplashScreen' screenOptions={{ headerShown: false }}>
@@ -27,4 +27,4 @@ const StuckNavigation = () => {
   )
 }
 
-export default StuckNavigation
+export default StackNavigation

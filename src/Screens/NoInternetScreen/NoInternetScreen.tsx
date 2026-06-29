@@ -13,7 +13,7 @@ const NoInternetScreen = () => {
       <StatusBar barStyle="dark-content" backgroundColor={Colours.BoneWhite} />
       <View style={styles.content}>
         <View style={{ height: verticalScale(300), width: scale(300) }}>
-          <Image source={{ uri: "https://res.cloudinary.com/dw5wrcvgk/image/upload/v1782554575/ChatGPT_Image_Jun_27_2026_12_08_34_PM_xlijdu.png" }}
+          <Image source={require("../../assets/Images/Nointernet.png")}
             style={{ width: "100%", height: "100%", resizeMode: 'contain' }}
           />
         </View>

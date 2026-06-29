@@ -25,6 +25,7 @@ export const Style = StyleSheet.create({
         fontSize: FontSize.vrlg,
         fontFamily: Fonts.MontserrateSemiBold,
         color: Colours.Black,
+        overflow:"hidden",
         width: scale(250),
         textAlign: 'center',
     },

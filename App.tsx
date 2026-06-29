@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import StuckNavigation from './src/Navigations/StackNavigation'
+import StackNavigation from './src/Navigations/StackNavigation'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { Provider } from 'react-redux'
 import { store } from './src/State/Store'
@@ -13,7 +13,7 @@ const App = () => {
   return (
     isConnected ? <Provider store={store}>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <StuckNavigation />
+        <StackNavigation />
         <Toast position="bottom" />
       </GestureHandlerRootView>
     </Provider> : <NoInternetScreen />

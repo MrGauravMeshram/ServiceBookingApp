@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { OnboadingData } from '../../../Data/OnboadingScreenData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Style } from '../../../Style/OnboardingScreenStyle';
-
+import Animated , { FadeInLeft, FadeOut, SlideInDown, useAnimatedStyle,useSharedValue, withTiming } from 'react-native-reanimated';
 const OnboardingScreen = ({ navigation }: any) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentData = OnboadingData[currentIndex];
+const scale = useSharedValue(0)
 
+useEffect(()=>{
+  scale.value = 0;
+   scale.value = withTiming(1,{duration:1000})
+},[currentIndex])
   const handleNext = async () => {
+
     setCurrentIndex(prev => (prev + 1 < OnboadingData.length ? prev + 1 : prev));
     if (currentIndex === OnboadingData.length - 1) {
       try {
@@ -19,7 +25,18 @@ const OnboardingScreen = ({ navigation }: any) => {
       navigation.navigate("Login");
     }
   };
-
+  
+  const AnimatedImageStyle = useAnimatedStyle(() => {
+  
+  
+  return {
+    transform: [
+      {
+        scale: scale.value,
+      },
+    ],
+  };
+});
   const handleSkip = async () => {
     try {
       await AsyncStorage.setItem('useronboarded', 'true');
@@ -32,13 +49,19 @@ const OnboardingScreen = ({ navigation }: any) => {
   return (
     <View style={Style.container}>
       <View style={Style.content}>
-        <Image source={currentData.image} style={Style.image} />
-        <Text testID="onboarding-title" style={Style.title}>
+        <Animated.Image source={currentData.image} style={[Style.image,AnimatedImageStyle]} key={`image-${currentIndex}`}  />
+        <View style={{height:70,overflow:"hidden"}}>
+        <Animated.Text 
+  key={`title-${currentIndex}`} testID="onboarding-title" style={[Style.title,{overflow:"hidden"}]} entering={SlideInDown.springify().damping(80).stiffness(200)} exiting={FadeOut.springify().damping(80).stiffness(200)}>
           {currentData.title}
-        </Text>
-        <Text testID="onboarding-subtitle" style={Style.subtitle}>
+        </Animated.Text>
+        </View>
+        <View style={{height:50,overflow:"hidden"}}>
+        <Animated.Text key={`subtitle-${currentIndex}`}  testID="onboarding-subtitle" style={Style.subtitle} entering={SlideInDown.springify().damping(80).stiffness(200).delay(300)}  exiting={FadeOut.springify().damping(80).stiffness(200)}>
           {currentData.subtitle}
-        </Text>
+         
+        </Animated.Text>
+         </View>
       </View>
       <View style={{ gap: 10, flexDirection: "row", alignSelf: "center", marginRight: 20 }}>
 

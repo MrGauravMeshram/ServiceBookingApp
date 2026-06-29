@@ -1,7 +1,5 @@
-import {
-  View, Text, StatusBar, ImageBackground, Alert, Linking
-} from 'react-native'
-import React from 'react'
+import {View, Text, StatusBar, ImageBackground, Alert, Linking} from 'react-native'
+import React,{useState} from 'react'
 import { Colours } from '../../Theme/Colours/Color'
 import HomeHeader from './Component/HomeHeader'
 import LinearGradient from 'react-native-linear-gradient';
@@ -29,7 +27,8 @@ const { width } = Dimensions.get('window');
 
 
 const HomeScreen = () => {
-
+const [isSticky, setIsSticky] = useState(false);
+const [stickyPosition, setStickyPosition] = useState(0);
   const scrollRef = useAnimatedRef();
   const scrollOffset = useScrollOffset(scrollRef)
 
@@ -37,13 +36,15 @@ const HomeScreen = () => {
     checkPermission();
   }, []);
   ExitApp();
-
+useEffect(() => {
+  console.log("stickyPosition:", stickyPosition);
+}, [stickyPosition]);
 
   const HeaderAnimationStyle = useAnimatedStyle(() => {
     const backgroundColor = interpolateColor(
       scrollOffset.value,
       [330, 380],
-      ['rgba(255,255,255,0)', 'rgba(255,255,255,1)']
+      ['rgba(255,255,255,0)', 'rgba(255,255,255,1.0)']
     );
     return {
       backgroundColor,
@@ -105,6 +106,20 @@ const HomeScreen = () => {
         scrollEventThrottle={16}
         stickyHeaderIndices={[2]}
         overScrollMode='never'
+      onScroll={(e) => {
+  const scrollY = e.nativeEvent.contentOffset.y;
+
+  console.log("scrollY:", scrollY);
+  console.log("stickyPosition:", stickyPosition);
+
+  const sticky = scrollY >= stickyPosition;
+
+  console.log("sticky:", sticky);
+
+  if (sticky !== isSticky) {
+    setIsSticky(sticky);
+  }
+}}
         contentContainerStyle={{ paddingBottom: verticalScale(70) }}
       >
 
@@ -120,7 +135,10 @@ const HomeScreen = () => {
           <HomeHeader />
         </View>
 
-        <Animated.View style={[style.searchHeader, HeaderAnimationStyle]}>
+        <Animated.View style={[style.searchHeader,{backgroundColor:isSticky?"white":"transparent"},HeaderAnimationStyle]}
+         onLayout={(e) => {
+    setStickyPosition(e.nativeEvent.layout.y);
+  }}>
           <SearchBar editable={false} />
         </Animated.View>
 

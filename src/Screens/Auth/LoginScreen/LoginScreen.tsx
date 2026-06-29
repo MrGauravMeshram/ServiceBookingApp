@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions ,StatusBar} from 'react-native';
 import React, { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -25,6 +25,7 @@ const LoginScreen = ({ navigation }: any) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content"/>
       <KeyboardAwareScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
@@ -36,7 +37,7 @@ const LoginScreen = ({ navigation }: any) => {
         <View style={styles.ImageContainer}>
           <Carousel
             width={width}
-            height={verticalScale(550)}
+            height={verticalScale(400)}
             data={CarouselData}
             autoPlay
             loop
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   ImageContainer: {
-    height: verticalScale(470),
+    height: verticalScale(430),
   },
   image: {
     width: '100%',

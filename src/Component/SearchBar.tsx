@@ -48,6 +48,7 @@ const Style = StyleSheet.create({
     height: verticalScale(50),
     width: "100%",
     flexDirection: "row",
+    borderWidth:0.8,
     backgroundColor: Colours.white,
     borderRadius: scale(10),
   },

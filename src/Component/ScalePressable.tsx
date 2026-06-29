@@ -8,11 +8,7 @@ import Animated, {
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-interface ScalePressableProps extends PressableProps {
-  children: any;
-  style?: any;
-  scaleTo?: number;
-}
+interface ScalePressableProps extends PressableProps {children: any; style?: any;scaleTo?: number;}
 
 export const ScalePressable = ({
   children,

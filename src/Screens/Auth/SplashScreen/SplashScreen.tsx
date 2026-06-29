@@ -14,7 +14,7 @@ const SplashScreen = ({navigation}:any) => {
           if (isLoggedIn === 'true') {
             navigation.replace("Home");
           } else if (onboarded === 'true') {
-            navigation.replace("Login");
+            navigation.replace("OnboardingScreen");
           } else {
             navigation.replace("OnboardingScreen");
           }

@@ -21,10 +21,6 @@ import { Address } from '../../utility/Address';
 import Toast from 'react-native-toast-message';
 import { styles } from '../../Style/AddMapStyle';
 
-export function ExampleMap() {
-    return <Map mapStyle="https://demotiles.maplibre.org/style.json" />;
-}
-
 const AddMapScreen = ({ navigation }: any) => {
     const dispatch = useDispatch();
     const addressState = useSelector((state: RootState) => state.address);
