@@ -14,15 +14,7 @@ type Props = {
     onPress?: () => void;
 };
 
-const ServiceCard = ({
-    image,
-    title,
-    rating,
-    reviews,
-    price,
-
-    onPress,
-}: Props) => {
+const ServiceCard = ({image,title, rating,reviews,price, onPress,}: Props) => {
     return (
         <ScalePressable
             style={styles.card}
